@@ -6,9 +6,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout, authenticate
+from drf_spectacular.views import extend_schema
 
 
 # Create your views here.
+@extend_schema(
+        description="Shows a List of all blogs",
+)
 class BlogPostListCreate(LoginRequiredMixin, generics.ListCreateAPIView):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
