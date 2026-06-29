@@ -145,7 +145,7 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'Blog.User'
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'BlOGPOST API',
+    'TITLE': 'BLOGPOST API',
     'DESCRIPTION': 'API for Creating Blogs',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
