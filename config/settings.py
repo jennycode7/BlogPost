@@ -80,17 +80,32 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 import os
+import dj_database_url
+
+from decouple import config
+
+
+DB_NAME='neondb'
+DB_USER = 'neondb_owner'
+DB_PASSWORD = 'npg_jQiCIw08pyMq'
+DB_HOST = 'ep-lively-fire-ataywf2j.c-9.us-east-1.aws.neon.tech'
+DB_PORT = '5432'
+
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres.lkkjmqhxihcjofnztrju',
-        'PASSWORD': 'Jennycode12++',
-        'HOST': 'aws-1-eu-central-1.pooler.supabase.com',
+        'NAME': 'neondb',
+        'USER': 'neondb_owner',
+        'PASSWORD': 'npg_jQiCIw08pyMq',
+        'HOST': 'ep-lively-fire-ataywf2j.c-9.us-east-1.aws.neon.tech',
         'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
+
 
 
 # Password validation
@@ -155,3 +170,6 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+
+DATABASE_URL='postgresql://neondb_owner:npg_jQiCIw08pyMq@ep-lively-fire-ataywf2j.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require'
