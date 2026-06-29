@@ -4,7 +4,7 @@
 
 ## Authentication - Signup
 
-* **URL:** `/api/auth/signup/`
+* **URL:** `/api/blogpost/signup/`
 * **Method:** `POST`
 * **Content-Type:** `application/json`
 
@@ -58,7 +58,7 @@
 
 ## Authentication - Login
 
-* **URL:** `/api/auth/login/`
+* **URL:** `/api/blogpost/login/`
 * **Method:** `POST`
 * **Content-Type:** `application/json`
 
@@ -113,7 +113,7 @@
 
 ## Authentication - Logout
 
-* **URL:** `/api/auth/logout/`
+* **URL:** `/api/blogpost/logout/`
 * **Method:** `POST`
 * **Content-Type:** `application/json`
 
@@ -153,7 +153,7 @@
 
 ## Posts - List & Create
 
-* **URL:** `/api/posts/`
+* **URL:** `/api/blogpost/posts/`
 * **Method:** `GET | POST`
 * **Content-Type:** `application/json`
 
@@ -213,7 +213,7 @@
 
 ## Posts - Detail / Update / Delete
 
-* **URL:** `/api/posts/{id}/`
+* **URL:** `/api/blogpost/posts/{id}/`
 * **Method:** `GET | PATCH | DELETE`
 * **Content-Type:** `application/json`
 
@@ -256,7 +256,7 @@
 
 ## Comments
 
-* **URL:** `/api/comments/`
+* **URL:** `/api/blogposts/comments/`
 * **Method:** `GET | POST`
 * **Content-Type:** `application/json`
 
@@ -295,7 +295,7 @@
 
 ## Likes
 
-* **URL:** `/api/posts/{id}/like/`
+* **URL:** `/api/blogpost/posts/{id}/like/`
 * **Method:** `POST`
 
 ---
