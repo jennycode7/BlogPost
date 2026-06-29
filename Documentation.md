@@ -1,65 +1,21 @@
-# Blog API
-
-##  Overview
-
-The **Blog API** is a RESTful backend built with **Django** and **Django REST Framework (DRF)**.
-
-It provides a complete blogging system with authentication, posts, comments, and likes — following modern backend best practices.
+# Blog API Documentation
 
 ---
 
-## Features
+## Authentication - Signup
 
-*  JWT Authentication (Login, Signup, Logout)
-*  CRUD for Blog Posts
-*  Comment System
-*  Like/Unlike System
-*  Permission-Based Access Control
+* **URL:** `/api/auth/signup/`
+* **Method:** `POST`
+* **Content-Type:** `application/json`
 
+### **Request Body:**
 
----
+| Field Name | Type   | Required | Description     |
+| ---------- | ------ | -------- | --------------- |
+| username   | string | Yes      | Unique username |
+| password   | string | Yes      | User password   |
 
-## Tech Stack
-
-* **Backend:** Django, Django REST Framework
-* **Authentication:** SimpleJWT
-* **Documentation:** DRF Spectacular
-* **Database:** SupaBase
-
----
-
-## Installation
-
-```bash
-# Clone the repo
-git clone https://github.com/your-username/blog-api.git
-
-# Navigate into project
-cd blog-api
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run migrations
-python manage.py migrate
-
-# Start server
-python manage.py runserver
-```
-
----
-
-##  Authentication
-
-Uses **JWT (JSON Web Tokens)**.
-
-### Signup
-
-`POST /api/auth/signup/`
+* **Example Request:**
 
 ```json
 {
@@ -70,9 +26,50 @@ Uses **JWT (JSON Web Tokens)**.
 
 ---
 
-### Login
+### **Response**
 
-`POST /api/auth/login/`
+**Status Code:** `201 Created`
+
+```json
+{
+  "message": "User created successfully"
+}
+```
+
+---
+
+### **Error Responses**
+
+**400 Bad Request**
+
+```json
+{
+  "error": "Username already exists"
+}
+```
+
+---
+
+### **Notes**
+
+* No authentication required
+
+---
+
+## Authentication - Login
+
+* **URL:** `/api/auth/login/`
+* **Method:** `POST`
+* **Content-Type:** `application/json`
+
+### **Request Body:**
+
+| Field Name | Type   | Required | Description |
+| ---------- | ------ | -------- | ----------- |
+| username   | string | Yes      | Username    |
+| password   | string | Yes      | Password    |
+
+* **Example Request:**
 
 ```json
 {
@@ -81,7 +78,11 @@ Uses **JWT (JSON Web Tokens)**.
 }
 ```
 
-**Response**
+---
+
+### **Response**
+
+**Status Code:** `200 OK`
 
 ```json
 {
@@ -92,127 +93,243 @@ Uses **JWT (JSON Web Tokens)**.
 
 ---
 
-### Logout
+### **Error Responses**
 
-`POST /api/auth/logout/`
+**401 Unauthorized**
 
 ```json
 {
-  "refresh": "jwt_refresh_token"
+  "error": "Invalid credentials"
 }
 ```
 
 ---
 
-## API Endpoints
+### **Notes**
 
-### Posts
-
-| Method | Endpoint             | Description            |
-| ------ | -------------------- | ---------------------- |
-| GET    | `/api/posts/`        | List all posts         |
-| POST   | `/api/posts/`        | Create a post          |
-| GET    | `/api/posts/{id}/` | Retrieve a single post |
-| PATCH  | `/api/posts/{id}/` | Update a post          |
-| DELETE | `/api/posts/{id}/` | Delete a post          |
+* Returns JWT tokens
 
 ---
 
-### Comments
+## Authentication - Logout
 
-| Method | Endpoint              | Description    |
-| ------ | --------------------- | -------------- |
-| GET    | `/api/comments/`      | List comments  |
-| POST   | `/api/comments/`      | Create comment |
-| PATCH  | `/api/comments/{id}/` | Update comment |
-| DELETE | `/api/comments/{id}/` | Delete comment |
+* **URL:** `/api/auth/logout/`
+* **Method:** `POST`
+* **Content-Type:** `application/json`
 
----
+### **Request Body:**
 
-### Likes
+| Field Name | Type   | Required | Description   |
+| ---------- | ------ | -------- | ------------- |
+| refresh    | string | Yes      | Refresh token |
 
-| Method | Endpoint                  | Description   |
-| ------ | ------------------------- | ------------- |
-| POST   | `/api/posts/{id}/like/`   | Like a post   |
+* **Example Request:**
 
----
-
-## Permissions
-
-* `IsAuthenticatedOrReadOnly`
-* Custom `IsAuthorOrReadOnly`
-
-### Rules
-
-*  Anyone can view content
-*  Only authenticated users can create
-*  Only authors can edit/delete
-
----
-
----
-
-## API Documentation
-
-Swagger/OpenAPI docs available via:
-
-```
-/api/schema/
-/api/docs/
+```json
+{
+  "refresh": "your_refresh_token"
+}
 ```
 
 ---
 
-## Features Yet to Be Added
+### **Response**
 
+**Status Code:** `200 OK`
 
-### User Profile System
-
-* User profile model (avatar, social links, followers, followings)
-* Profile view and update endpoints
-
----
-
-### Notifications System
-
-* Real-time or async notifications for:
-  
-  * New comments on posts
-  * Likes on posts
-* Email or in-app notification support
+```json
+{
+  "message": "Logged out successfully"
+}
+```
 
 ---
 
-### Search & Filtering
+### **Notes**
 
-* Search posts by title and content
-* Filter posts by:
-
-  * Author
-  * Date created
-  * Status (draft/published)
+* Requires authentication
 
 ---
 
-### Nested Comments (Replies)
+## Posts - List & Create
 
-* Enable replies to comments
-* Support threaded discussions
+* **URL:** `/api/posts/`
+* **Method:** `GET | POST`
+* **Content-Type:** `application/json`
+
+### **Request Body (POST):**
+
+| Field Name | Type   | Required | Description        |
+| ---------- | ------ | -------- | ------------------ |
+| title      | string | Yes      | Post title         |
+| content    | string | Yes      | Post content       |
+| status     | string | Yes      | draft or published |
 
 ---
 
-### Follow System
+### **Response**
 
-* Users can follow/unfollow other users
-* Personalized feed based on followed users
+**GET - 200 OK**
+
+```json
+[
+  {
+    "id": 1,
+    "title": "My First Blog",
+    "slug": "my-first-blog",
+    "content": "This is my first post",
+    "status": "published",
+    "author": {
+      "id": 1,
+      "username": "jennifer"
+    },
+    "likes_count": 2,
+    "comments_count": 1,
+    "created_at": "2026-06-28T12:00:00Z",
+    "published_at": "2026-06-28T12:30:00Z"
+  }
+]
+```
 
 ---
 
-### Analytics
+**POST - 201 Created**
 
-* Track post views
-* Monitor user engagement (likes, comments)
+```json
+{
+  "message": "Post created successfully"
+}
+```
+
+---
+
+### **Notes**
+
+* GET is public
+* POST requires authentication
+* Author is auto-assigned
+
+---
+
+## Posts - Detail / Update / Delete
+
+* **URL:** `/api/posts/{id}/`
+* **Method:** `GET | PATCH | DELETE`
+* **Content-Type:** `application/json`
+
+---
+
+### **Response**
+
+**GET - 200 OK**
+
+```json
+{
+  "id": 1,
+  "title": "My First Blog",
+  "slug": "my-first-blog",
+  "content": "This is my first post"
+}
+```
+
+---
+
+**PATCH - 200 OK**
+
+```json
+{
+  "message": "Post updated successfully"
+}
+```
+
+---
+
+**DELETE - 204 No Content**
+
+---
+
+### **Notes**
+
+* Only author can update/delete
+
+---
+
+## Comments
+
+* **URL:** `/api/comments/`
+* **Method:** `GET | POST`
+* **Content-Type:** `application/json`
+
+---
+
+### **Request Body (POST):**
+
+| Field Name | Type   | Required | Description  |
+| ---------- | ------ | -------- | ------------ |
+| post       | int    | Yes      | Post ID      |
+| content    | string | Yes      | Comment text |
+
+---
+
+### **Response**
+
+**200 OK**
+
+```json
+[
+  {
+    "id": 1,
+    "content": "Nice post!",
+    "author": "jennifer"
+  }
+]
+```
+
+---
+
+### **Notes**
+
+* Requires authentication to create
+
+---
+
+## Likes
+
+* **URL:** `/api/posts/{id}/like/`
+* **Method:** `POST`
+
+---
+
+### **Response**
+
+```json
+{
+  "message": "Post liked"
+}
+```
+
+---
 
 
+### **Notes**
+
+* Requires authentication
+* Prevent duplicate likes
+
+---
+
+## General Notes
+
+* All protected routes require:
+
+```
+Authorization: Bearer <access_token>
+```
+
+* Permissions:
+
+  * Read → Public
+  * Write → Authenticated users
+  * Edit/Delete → Owner only
 
 ---
